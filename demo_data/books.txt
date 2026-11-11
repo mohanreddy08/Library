@@ -1,0 +1,15 @@
+101|Introduction to Algorithms|Cormen, Leiserson, Rivest, Stein|Algorithms|2|2
+102|Data Structures and Algorithms in Java|Goodrich, Tamassia, Goldwasser|Data Structures|3|3
+103|Algorithms|Sedgewick, Wayne|Algorithms|2|2
+104|Effective Java|Joshua Bloch|Java|2|2
+105|Clean Code|Robert C. Martin|Software Engineering|1|1
+106|Java: The Complete Reference|Herbert Schildt|Java|3|3
+107|Head First Java|Kathy Sierra, Bert Bates|Java|2|2
+108|The C Programming Language|Kernighan, Ritchie|Programming|2|2
+109|Operating System Concepts|Silberschatz, Galvin, Gagne|Operating Systems|2|2
+110|Database System Concepts|Silberschatz, Korth, Sudarshan|Databases|2|2
+111|Computer Networks|Andrew S. Tanenbaum|Networks|1|1
+112|Design Patterns|Gamma, Helm, Johnson, Vlissides|Software Engineering|1|1
+113|Cracking the Coding Interview|Gayle Laakmann McDowell|Interview Preparation|2|2
+114|Artificial Intelligence: A Modern Approach|Russell, Norvig|Artificial Intelligence|1|1
+115|Discrete Mathematics and Its Applications|Kenneth H. Rosen|Mathematics|2|2

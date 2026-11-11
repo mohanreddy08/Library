@@ -1,0 +1,157 @@
+No saved data found. Sample data created.
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Date (yyyy-mm-dd): Date set to 2026-03-01
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Member id: Book id: Issued. Due date: 2026-03-15
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Member id: Book id: Issued. Due date: 2026-03-15
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Member id: Book id: Not issued: NO_COPY_AVAILABLE
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Member id: Book id: Reserved. Queue position: 1
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Title starts with: [101] Introduction to Algorithms by Cormen, Leiserson, Rivest, Stein (Algorithms) - 1/2 available
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Date (yyyy-mm-dd): Date set to 2026-03-25
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: T1: member 1, book 101, issued 2026-03-01, due 2026-03-15, not returned
+T2: member 1, book 111, issued 2026-03-01, due 2026-03-15, not returned
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Member id: Book id: Returned. Fine charged: Rs. 20
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Member id: [1] Asha (fine due: Rs. 20)
+  T1: member 1, book 101, issued 2026-03-01, due 2026-03-15, not returned
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Member id: Book id: Issued. Due date: 2026-04-08
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Member id: Amount: Fine updated.
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Member id: Amount: Invalid member or amount.
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Undid payment of Rs. 10 by member 1
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Undid ISSUE of book 111 to member 2
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Author contains: [110] Database System Concepts by Silberschatz, Korth, Sudarshan (Databases) - 2/2 available
+[109] Operating System Concepts by Silberschatz, Galvin, Gagne (Operating Systems) - 2/2 available
+
+===== LIBRARY MANAGEMENT SYSTEM =====
+ 1. Add book              2. Remove book           3. Add member
+ 4. Issue book            5. Return book           6. Reserve book
+ 7. Search by id          8. Search title prefix   9. Search by author
+10. List books by title  11. List books by author 12. Overdue report
+13. Pay fine             14. Undo last action   15. Member loans
+16. Set today's date (demo)   0. Save and exit
+Enter choice: Data saved. Goodbye.

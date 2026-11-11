@@ -1,0 +1,6 @@
+1|Asha|502
+2|Ravi|0
+3|Kiran|0
+4|Meena|0
+5|Suresh|0
+6|Divya|0

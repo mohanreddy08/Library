@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Management System</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #e0e7ff;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --warning: #f59e0b;
+      --warning-light: #fef3c7;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* Top Navbar */
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+    .brand { display: flex; align-items: center; gap: 0.75rem; font-weight: 700; font-size: 1.25rem; color: var(--primary); }
+    .brand svg { width: 28px; height: 28px; fill: var(--primary); }
+
+    .header-actions { display: flex; align-items: center; gap: 0.75rem; }
+    .badge-date {
+      background: #f1f5f9;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: 1px solid var(--border);
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.15s ease;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary { background: white; border-color: var(--border); color: var(--text-main); }
+    .btn-secondary:hover { background: #f8fafc; border-color: #cbd5e1; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-danger:hover { background: #dc2626; }
+    .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.75rem; }
+
+    /* Navigation tabs */
+    .nav-tabs {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      padding: 0 1.5rem;
+      gap: 1.5rem;
+    }
+    .tab-btn {
+      padding: 0.85rem 0.25rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .tab-btn:hover { color: var(--text-main); }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+
+    /* Main Container */
+    main { max-width: 1200px; width: 100%; margin: 1.5rem auto; padding: 0 1rem; flex: 1; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; animation: fadeIn 0.2s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .stat-val { font-size: 1.75rem; font-weight: 700; color: var(--text-main); }
+    .stat-val.highlight { color: var(--primary); }
+    .stat-val.alert { color: var(--danger); }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fafafa;
+    }
+    .card-title { font-size: 1rem; font-weight: 600; }
+    .card-body { padding: 1.25rem; }
+
+    /* Forms & Inputs */
+    .form-group { margin-bottom: 1rem; }
+    .form-label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.35rem; }
+    .form-control {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }
+    .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+
+    /* Tables */
+    .table-container { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.875rem; }
+    th { background: #f8fafc; padding: 0.75rem 1rem; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+    td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:hover td { background: #f8fafc; }
+
+    /* Badges */
+    .badge {
+      padding: 0.2rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+    }
+    .badge-success { background: var(--success-light); color: #065f46; }
+    .badge-warning { background: var(--warning-light); color: #92400e; }
+    .badge-danger { background: var(--danger-light); color: #991b1b; }
+    .badge-info { background: var(--primary-light); color: var(--primary); }
+
+    /* Modals */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(2px);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: white;
+      border-radius: var(--radius);
+      max-width: 500px;
+      width: 90%;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      animation: modalSlide 0.2s ease-out;
+    }
+    @keyframes modalSlide { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .modal-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .modal-body { padding: 1.25rem; }
+    .modal-footer { padding: 0.75rem 1.25rem; border-top: 1px solid var(--border); background: #f8fafc; display: flex; justify-content: flex-end; gap: 0.5rem; }
+
+    /* Toast Notification */
+    #toast-container { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 300; display: flex; flex-direction: column; gap: 0.5rem; }
+    .toast {
+      background: #1e293b;
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      box-shadow: var(--shadow-lg);
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      animation: toastIn 0.25s ease-out;
+      min-width: 250px;
+    }
+    .toast.success { border-left: 4px solid var(--success); }
+    .toast.error { border-left: 4px solid var(--danger); }
+    .toast.info { border-left: 4px solid var(--primary); }
+    @keyframes toastIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    /* Quick filter / search bar */
+    .filter-bar { display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .search-box { position: relative; flex: 1; min-width: 220px; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 24 24"><path d="M19 2H6c-1.2 0-2 .8-2 2v16c0 1.2.8 2 2 2h13a1 1 0 001-1V3a1 1 0 00-1-1zm-1 18H6a1 1 0 010-2h12v2zm0-4H6c-.5 0-.9-.1-1.3-.3.2-.4.7-.7 1.3-.7h12v1zm0-3H6c-.5 0-.9-.1-1.3-.3.2-.4.7-.7 1.3-.7h12v1zm0-3H6c-.5 0-.9-.1-1.3-.3.2-.4.7-.7 1.3-.7h12v1zm0-3H6c-.5 0-.9-.1-1.3-.3.2-.4.7-.7 1.3-.7h12v1z"/></svg>
+      Library Management System
+    </div>
+    <div class="header-actions">
+      <div class="badge-date" id="date-badge">
+        <span>📅</span> <span id="current-date-text">Loading...</span>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="openDateModal()">Simulate Date</button>
+      <button class="btn btn-secondary btn-sm" onclick="undoLastAction()" title="Undo last action">↩ Undo</button>
+      <button class="btn btn-primary btn-sm" onclick="saveToDisk()" title="Save current data to disk">💾 Save</button>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('dashboard')">Dashboard</button>
+    <button class="tab-btn" onclick="switchTab('books')">Books Catalog</button>
+    <button class="tab-btn" onclick="switchTab('members')">Members</button>
+    <button class="tab-btn" onclick="switchTab('circulation')">Circulation</button>
+    <button class="tab-btn" onclick="switchTab('overdue')">Overdue Loans</button>
+    <button class="tab-btn" onclick="switchTab('history')">Audit History</button>
+  </nav>
+
+  <!-- Main Content Areas -->
+  <main>
+    <!-- TAB: DASHBOARD -->
+    <div id="tab-dashboard" class="tab-pane active">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-title">Book Titles</div>
+          <div class="stat-val highlight" id="stat-titles">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Total Copies</div>
+          <div class="stat-val" id="stat-total-copies">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Available Copies</div>
+          <div class="stat-val" id="stat-avail-copies">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Active Loans</div>
+          <div class="stat-val" id="stat-active-loans">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Overdue Items</div>
+          <div class="stat-val alert" id="stat-overdue-count">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Pending Fines</div>
+          <div class="stat-val alert" id="stat-total-fines">Rs. 0</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <!-- Quick Circulation Shortcuts -->
+        <div class="card" style="flex: 1;">
+          <div class="card-header">
+            <h3 class="card-title">Quick Actions</h3>
+          </div>
+          <div class="card-body" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="openIssueModal()">+ Issue Book</button>
+            <button class="btn btn-secondary" onclick="openReturnModal()">Return Book</button>
+            <button class="btn btn-secondary" onclick="openReserveModal()">Reserve Book</button>
+            <button class="btn btn-secondary" onclick="openAddBookModal()">+ Add New Book</button>
+            <button class="btn btn-secondary" onclick="openAddMemberModal()">+ Add Member</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overdue Highlights -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Urgent: Overdue Loans Requiring Attention</h3>
+          <button class="btn btn-secondary btn-sm" onclick="switchTab('overdue')">View All</button>
+        </div>
+        <div class="card-body table-container">
+          <table id="dashboard-overdue-table">
+            <thead>
+              <tr>
+                <th>Txn ID</th>
+                <th>Member</th>
+                <th>Book Title</th>
+                <th>Due Date</th>
+                <th>Fine Accrued</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No overdue books currently.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: BOOKS CATALOG -->
+    <div id="tab-books" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Book Catalogue</h3>
+          <button class="btn btn-primary btn-sm" onclick="openAddBookModal()">+ Add Book</button>
+        </div>
+        <div class="card-body">
+          <div class="filter-bar">
+            <div class="search-box">
+              <input type="text" id="book-search-prefix" class="form-control" placeholder="Search title prefix (Trie)..." oninput="debounce(loadBooks, 250)()">
+            </div>
+            <input type="text" id="book-search-author" class="form-control" style="max-width: 200px;" placeholder="Filter by author..." oninput="debounce(loadBooks, 250)()">
+            <input type="text" id="book-search-category" class="form-control" style="max-width: 200px;" placeholder="Filter by category..." oninput="debounce(loadBooks, 250)()">
+            <select id="book-sort" class="form-control" style="max-width: 150px;" onchange="loadBooks()">
+              <option value="id">Sort by ID</option>
+              <option value="title">Sort by Title</option>
+              <option value="author">Sort by Author</option>
+            </select>
+            <button class="btn btn-secondary" onclick="resetBookFilters()">Reset</button>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>Author</th>
+                  <th>Category</th>
+                  <th>Copies Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="books-tbody">
+                <tr><td colspan="6" style="text-align: center;">Loading books...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: MEMBERS -->
+    <div id="tab-members" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Registered Members</h3>
+          <button class="btn btn-primary btn-sm" onclick="openAddMemberModal()">+ Add Member</button>
+        </div>
+        <div class="card-body table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Member ID</th>
+                <th>Full Name</th>
+                <th>Outstanding Fine</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="members-tbody">
+              <tr><td colspan="4" style="text-align: center;">Loading members...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: CIRCULATION -->
+    <div id="tab-circulation" class="tab-pane">
+      <div class="form-row">
+        <!-- Issue Book Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Issue Book (Loan)</h3>
+          </div>
+          <div class="card-body">
+            <form onsubmit="handleIssueSubmit(event)">
+              <div class="form-group">
+                <label class="form-label">Member ID</label>
+                <input type="number" id="issue-member-id" class="form-control" required placeholder="e.g. 1">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Book ID</label>
+                <input type="number" id="issue-book-id" class="form-control" required placeholder="e.g. 101">
+              </div>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
+                Standard loan period is 14 days. Limit: 3 books per member.
+              </p>
+              <button type="submit" class="btn btn-primary" style="width: 100%;">Issue Book</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Return Book Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Return Book</h3>
+          </div>
+          <div class="card-body">
+            <form onsubmit="handleReturnSubmit(event)">
+              <div class="form-group">
+                <label class="form-label">Member ID</label>
+                <input type="number" id="return-member-id" class="form-control" required placeholder="e.g. 1">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Book ID</label>
+                <input type="number" id="return-book-id" class="form-control" required placeholder="e.g. 101">
+              </div>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
+                Late returns incur an automatic fine of Rs. 2 per day past due date.
+              </p>
+              <button type="submit" class="btn btn-secondary" style="width: 100%;">Return Book</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Reserve Book Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Reserve Book (Queue)</h3>
+          </div>
+          <div class="card-body">
+            <form onsubmit="handleReserveSubmit(event)">
+              <div class="form-group">
+                <label class="form-label">Member ID</label>
+                <input type="number" id="reserve-member-id" class="form-control" required placeholder="e.g. 2">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Book ID</label>
+                <input type="number" id="reserve-book-id" class="form-control" required placeholder="e.g. 105">
+              </div>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
+                Places member in a FIFO waiting queue when all copies are checked out.
+              </p>
+              <button type="submit" class="btn btn-secondary" style="width: 100%;">Place Reservation</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: OVERDUE LOANS -->
+    <div id="tab-overdue" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Overdue Borrowings Report (Priority Queue)</h3>
+          <button class="btn btn-secondary btn-sm" onclick="loadOverdue()">Refresh</button>
+        </div>
+        <div class="card-body table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Txn #</th>
+                <th>Member</th>
+                <th>Book Title</th>
+                <th>Issued On</th>
+                <th>Due Date</th>
+                <th>Current Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="overdue-tbody">
+              <tr><td colspan="7" style="text-align: center;">Loading overdue loans...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: AUDIT HISTORY -->
+    <div id="tab-history" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Transaction Log & Circulation History</h3>
+          <button class="btn btn-secondary btn-sm" onclick="undoLastAction()">↩ Undo Last Action</button>
+        </div>
+        <div class="card-body table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Txn #</th>
+                <th>Member</th>
+                <th>Book Title</th>
+                <th>Issue Date</th>
+                <th>Due Date</th>
+                <th>Return Date</th>
+                <th>Fine Charged</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="history-tbody">
+              <tr><td colspan="8" style="text-align: center;">Loading transaction history...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODALS -->
+
+  <!-- Add Book Modal -->
+  <div id="modal-add-book" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Add New Book</h3>
+        <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-add-book')">✕</button>
+      </div>
+      <form onsubmit="handleAddBookSubmit(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Book ID</label>
+            <input type="number" id="new-book-id" class="form-control" required placeholder="e.g. 116">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Title</label>
+            <input type="text" id="new-book-title" class="form-control" required placeholder="e.g. Structure and Interpretation of Computer Programs">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Author</label>
+            <input type="text" id="new-book-author" class="form-control" required placeholder="e.g. Abelson, Sussman">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <input type="text" id="new-book-category" class="form-control" placeholder="e.g. Computer Science">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Total Copies</label>
+            <input type="number" id="new-book-copies" class="form-control" required value="2" min="1">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-add-book')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Book</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Member Modal -->
+  <div id="modal-add-member" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Register New Member</h3>
+        <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-add-member')">✕</button>
+      </div>
+      <form onsubmit="handleAddMemberSubmit(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Member ID</label>
+            <input type="number" id="new-member-id" class="form-control" required placeholder="e.g. 7">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="new-member-name" class="form-control" required placeholder="e.g. John Doe">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-add-member')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Register Member</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Pay Fine Modal -->
+  <div id="modal-pay-fine" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Pay Library Fine</h3>
+        <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-pay-fine')">✕</button>
+      </div>
+      <form onsubmit="handlePayFineSubmit(event)">
+        <div class="modal-body">
+          <input type="hidden" id="pay-fine-member-id">
+          <p id="pay-fine-info" style="margin-bottom: 1rem; font-size: 0.9rem;"></p>
+          <div class="form-group">
+            <label class="form-label">Payment Amount (Rs.)</label>
+            <input type="number" id="pay-fine-amount" class="form-control" required min="1">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-pay-fine')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Record Payment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Member Loans Modal -->
+  <div id="modal-member-loans" class="modal-overlay">
+    <div class="modal" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 id="member-loans-title">Member Active Loans</h3>
+        <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-member-loans')">✕</button>
+      </div>
+      <div class="modal-body table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Book Title</th>
+              <th>Issued</th>
+              <th>Due</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="member-loans-tbody">
+            <tr><td colspan="4">No active loans.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-member-loans')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reservation Queue Modal -->
+  <div id="modal-reservations" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="reservations-title">Book Waiting Queue</h3>
+        <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-reservations')">✕</button>
+      </div>
+      <div class="modal-body table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Queue Position</th>
+              <th>Member ID</th>
+              <th>Member Name</th>
+            </tr>
+          </thead>
+          <tbody id="reservations-tbody">
+            <tr><td colspan="3">Queue is empty.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-reservations')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Simulate Date Modal -->
+  <div id="modal-date" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Simulate System Date</h3>
+        <button class="btn btn-sm btn-secondary" onclick="closeModal('modal-date')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+          Advance the system calendar to test due date expiration, overdue penalties, and fine accrual.
+        </p>
+        <div class="form-group">
+          <label class="form-label">Set Specific Date</label>
+          <input type="date" id="input-system-date" class="form-control">
+        </div>
+        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="advanceDays(1)">+1 Day</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="advanceDays(7)">+7 Days</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="advanceDays(14)">+14 Days</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="resetToday()">Reset to Today</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-date')">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="setSpecificDate()">Apply Date</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Frontend Logic -->
+  <script>
+    const API = {
+      async get(url) {
+        const res = await fetch(url);
+        return res.json();
+      },
+      async post(url, data) {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        return res.json();
+      },
+      async delete(url) {
+        const res = await fetch(url, { method: 'DELETE' });
+        return res.json();
+      }
+    };
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<span>${type === 'success' ? '✓' : type === 'error' ? '⚠' : 'ℹ'}</span> <span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+      const pane = document.getElementById(`tab-${tabId}`);
+      if (pane) pane.classList.add('active');
+
+      if (tabId === 'dashboard') loadStats();
+      if (tabId === 'books') loadBooks();
+      if (tabId === 'members') loadMembers();
+      if (tabId === 'overdue') loadOverdue();
+      if (tabId === 'history') loadHistory();
+    }
+
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    // Debounce helper
+    function debounce(func, wait) {
+      let timeout;
+      return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
+    // ---------------- Stats & Dashboard ----------------
+    async function loadStats() {
+      try {
+        const data = await API.get('/api/stats');
+        if (data.success) {
+          document.getElementById('current-date-text').textContent = data.today;
+          document.getElementById('input-system-date').value = data.today;
+          document.getElementById('stat-titles').textContent = data.stats.totalTitles;
+          document.getElementById('stat-total-copies').textContent = data.stats.totalCopies;
+          document.getElementById('stat-avail-copies').textContent = data.stats.availableCopies;
+          document.getElementById('stat-active-loans').textContent = data.stats.activeLoans;
+          document.getElementById('stat-overdue-count').textContent = data.stats.activeLoans > 0 ? '...' : 0;
+          document.getElementById('stat-total-fines').textContent = `Rs. ${data.stats.totalFinesDue}`;
+        }
+        loadDashboardOverdue();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function loadDashboardOverdue() {
+      try {
+        const data = await API.get('/api/overdue');
+        const count = data.overdue ? data.overdue.length : 0;
+        document.getElementById('stat-overdue-count').textContent = count;
+        const tbody = document.querySelector('#dashboard-overdue-table tbody');
+        if (!data.overdue || data.overdue.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No overdue books currently. Great job!</td></tr>';
+          return;
+        }
+        tbody.innerHTML = data.overdue.slice(0, 5).map(t => `
+          <tr>
+            <td><strong>#${t.id}</strong></td>
+            <td>${t.memberName} <span style="color:var(--text-muted);font-size:0.75rem;">(ID ${t.memberId})</span></td>
+            <td>${t.bookTitle} <span style="color:var(--text-muted);font-size:0.75rem;">(ID ${t.bookId})</span></td>
+            <td><span class="badge badge-danger">${t.dueDate}</span></td>
+            <td style="color:var(--danger);font-weight:600;">Rs. ${calculateFine(t.dueDate)}</td>
+            <td>
+              <button class="btn btn-sm btn-secondary" onclick="quickReturn(${t.memberId}, ${t.bookId})">Return Now</button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function calculateFine(dueDateStr) {
+      const today = new Date(document.getElementById('current-date-text').textContent);
+      const due = new Date(dueDateStr);
+      const diffTime = today - due;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays > 0 ? diffDays * 2 : 0;
+    }
+
+    // ---------------- Books ----------------
+    async function loadBooks() {
+      const prefix = document.getElementById('book-search-prefix').value.trim();
+      const author = document.getElementById('book-search-author').value.trim();
+      const category = document.getElementById('book-search-category').value.trim();
+      const sort = document.getElementById('book-sort').value;
+
+      let url = '/api/books?sort=' + encodeURIComponent(sort);
+      if (prefix) url += '&prefix=' + encodeURIComponent(prefix);
+      else if (author) url += '&author=' + encodeURIComponent(author);
+      else if (category) url += '&category=' + encodeURIComponent(category);
+
+      try {
+        const data = await API.get(url);
+        const tbody = document.getElementById('books-tbody');
+        if (!data.books || data.books.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No matching books found.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = data.books.map(b => {
+          let badge = '';
+          if (b.availableCopies === 0) {
+            badge = '<span class="badge badge-danger">0 / ' + b.totalCopies + ' Available (Reserved/Loaned)</span>';
+          } else if (b.availableCopies < b.totalCopies) {
+            badge = '<span class="badge badge-warning">' + b.availableCopies + ' / ' + b.totalCopies + ' Available</span>';
+          } else {
+            badge = '<span class="badge badge-success">' + b.availableCopies + ' / ' + b.totalCopies + ' Available</span>';
+          }
+
+          return `
+            <tr>
+              <td><strong>#${b.id}</strong></td>
+              <td><strong>${b.title}</strong></td>
+              <td>${b.author}</td>
+              <td><span class="badge badge-info">${b.category}</span></td>
+              <td>${badge}</td>
+              <td>
+                <div style="display:flex;gap:0.4rem;">
+                  <button class="btn btn-sm btn-primary" onclick="quickIssueBook(${b.id})" ${b.availableCopies === 0 ? 'disabled style="opacity:0.5"' : ''}>Issue</button>
+                  <button class="btn btn-sm btn-secondary" onclick="quickReserveBook(${b.id})" ${b.availableCopies > 0 ? 'disabled style="opacity:0.5"' : ''}>Reserve</button>
+                  <button class="btn btn-sm btn-secondary" onclick="viewReservations(${b.id}, '${escapeHtml(b.title)}')">Queue</button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteBook(${b.id})">Delete</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (e) {
+        showToast('Failed to load books: ' + e.message, 'error');
+      }
+    }
+
+    function resetBookFilters() {
+      document.getElementById('book-search-prefix').value = '';
+      document.getElementById('book-search-author').value = '';
+      document.getElementById('book-search-category').value = '';
+      document.getElementById('book-sort').value = 'id';
+      loadBooks();
+    }
+
+    function openAddBookModal() { openModal('modal-add-book'); }
+
+    async function handleAddBookSubmit(e) {
+      e.preventDefault();
+      const id = parseInt(document.getElementById('new-book-id').value);
+      const title = document.getElementById('new-book-title').value.trim();
+      const author = document.getElementById('new-book-author').value.trim();
+      const category = document.getElementById('new-book-category').value.trim() || 'General';
+      const copies = parseInt(document.getElementById('new-book-copies').value);
+
+      const res = await API.post('/api/books', { id, title, author, category, copies });
+      if (res.success) {
+        showToast('Book added successfully!', 'success');
+        closeModal('modal-add-book');
+        e.target.reset();
+        loadBooks();
+        loadStats();
+      } else {
+        showToast(res.error || 'Failed to add book', 'error');
+      }
+    }
+
+    async function deleteBook(id) {
+      if (!confirm(`Are you sure you want to remove book #${id}? Books with active loans cannot be removed.`)) return;
+      const res = await API.delete(`/api/books?id=${id}`);
+      if (res.success) {
+        showToast(res.message, 'success');
+        loadBooks();
+        loadStats();
+      } else {
+        showToast(res.error || 'Failed to delete book', 'error');
+      }
+    }
+
+    // ---------------- Members ----------------
+    async function loadMembers() {
+      try {
+        const data = await API.get('/api/members?sort=id');
+        const tbody = document.getElementById('members-tbody');
+        if (!data.members || data.members.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No members found.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = data.members.map(m => `
+          <tr>
+            <td><strong>#${m.id}</strong></td>
+            <td><strong>${m.name}</strong></td>
+            <td>
+              ${m.fineDue > 0 
+                ? `<span class="badge badge-danger">Rs. ${m.fineDue} Due</span>` 
+                : `<span class="badge badge-success">No Fines</span>`}
+            </td>
+            <td>
+              <div style="display:flex;gap:0.4rem;">
+                <button class="btn btn-sm btn-secondary" onclick="viewMemberLoans(${m.id}, '${escapeHtml(m.name)}')">View Loans</button>
+                <button class="btn btn-sm btn-primary" onclick="openPayFineModal(${m.id}, '${escapeHtml(m.name)}', ${m.fineDue})" ${m.fineDue === 0 ? 'disabled style="opacity:0.5"' : ''}>Pay Fine</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        showToast('Failed to load members: ' + e.message, 'error');
+      }
+    }
+
+    function openAddMemberModal() { openModal('modal-add-member'); }
+
+    async function handleAddMemberSubmit(e) {
+      e.preventDefault();
+      const id = parseInt(document.getElementById('new-member-id').value);
+      const name = document.getElementById('new-member-name').value.trim();
+
+      const res = await API.post('/api/members', { id, name });
+      if (res.success) {
+        showToast('Member registered successfully!', 'success');
+        closeModal('modal-add-member');
+        e.target.reset();
+        loadMembers();
+        loadStats();
+      } else {
+        showToast(res.error || 'Failed to add member', 'error');
+      }
+    }
+
+    async function viewMemberLoans(memberId, memberName) {
+      try {
+        const data = await API.get(`/api/members?id=${memberId}`);
+        document.getElementById('member-loans-title').textContent = `${memberName}'s Active Loans`;
+        const tbody = document.getElementById('member-loans-tbody');
+        if (!data.activeLoans || data.activeLoans.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No active loans.</td></tr>';
+        } else {
+          tbody.innerHTML = data.activeLoans.map(t => `
+            <tr>
+              <td><strong>${t.bookTitle}</strong> (Book #${t.bookId})</td>
+              <td>${t.issueDate}</td>
+              <td><span class="badge badge-info">${t.dueDate}</span></td>
+              <td><button class="btn btn-sm btn-secondary" onclick="quickReturn(${memberId}, ${t.bookId})">Return Book</button></td>
+            </tr>
+          `).join('');
+        }
+        openModal('modal-member-loans');
+      } catch (e) {
+        showToast('Error loading loans: ' + e.message, 'error');
+      }
+    }
+
+    function openPayFineModal(memberId, memberName, fineDue) {
+      document.getElementById('pay-fine-member-id').value = memberId;
+      document.getElementById('pay-fine-info').innerHTML = `Member: <strong>${memberName}</strong> (ID #${memberId})<br>Outstanding balance: <strong style="color:var(--danger)">Rs. ${fineDue}</strong>`;
+      document.getElementById('pay-fine-amount').value = fineDue;
+      document.getElementById('pay-fine-amount').max = fineDue;
+      openModal('modal-pay-fine');
+    }
+
+    async function handlePayFineSubmit(e) {
+      e.preventDefault();
+      const memberId = parseInt(document.getElementById('pay-fine-member-id').value);
+      const amount = parseInt(document.getElementById('pay-fine-amount').value);
+
+      const res = await API.post('/api/pay-fine', { memberId, amount });
+      if (res.success) {
+        showToast(res.message, 'success');
+        closeModal('modal-pay-fine');
+        loadMembers();
+        loadStats();
+      } else {
+        showToast(res.error || 'Payment failed', 'error');
+      }
+    }
+
+    // ---------------- Circulation ----------------
+    function openIssueModal() { switchTab('circulation'); document.getElementById('issue-member-id').focus(); }
+    function openReturnModal() { switchTab('circulation'); document.getElementById('return-member-id').focus(); }
+    function openReserveModal() { switchTab('circulation'); document.getElementById('reserve-member-id').focus(); }
+
+    function quickIssueBook(bookId) {
+      const memberId = prompt(`Enter Member ID to issue Book #${bookId}:`);
+      if (!memberId) return;
+      issueBook(parseInt(memberId), bookId);
+    }
+
+    function quickReserveBook(bookId) {
+      const memberId = prompt(`Enter Member ID to reserve Book #${bookId}:`);
+      if (!memberId) return;
+      reserveBook(parseInt(memberId), bookId);
+    }
+
+    async function issueBook(memberId, bookId) {
+      const res = await API.post('/api/issue', { memberId, bookId });
+      if (res.success) {
+        showToast(res.message, 'success');
+        loadStats();
+        loadBooks();
+      } else {
+        showToast(res.error || 'Could not issue book', 'error');
+      }
+    }
+
+    async function handleIssueSubmit(e) {
+      e.preventDefault();
+      const memberId = parseInt(document.getElementById('issue-member-id').value);
+      const bookId = parseInt(document.getElementById('issue-book-id').value);
+      await issueBook(memberId, bookId);
+    }
+
+    async function quickReturn(memberId, bookId) {
+      const res = await API.post('/api/return', { memberId, bookId });
+      if (res.success) {
+        showToast(res.message, 'success');
+        closeModal('modal-member-loans');
+        loadStats();
+        loadBooks();
+        loadOverdue();
+        loadMembers();
+      } else {
+        showToast(res.error || 'Return failed', 'error');
+      }
+    }
+
+    async function handleReturnSubmit(e) {
+      e.preventDefault();
+      const memberId = parseInt(document.getElementById('return-member-id').value);
+      const bookId = parseInt(document.getElementById('return-book-id').value);
+      await quickReturn(memberId, bookId);
+    }
+
+    async function reserveBook(memberId, bookId) {
+      const res = await API.post('/api/reserve', { memberId, bookId });
+      if (res.success) {
+        showToast(res.message, 'success');
+        loadStats();
+        loadBooks();
+      } else {
+        showToast(res.error || 'Reservation failed', 'error');
+      }
+    }
+
+    async function handleReserveSubmit(e) {
+      e.preventDefault();
+      const memberId = parseInt(document.getElementById('reserve-member-id').value);
+      const bookId = parseInt(document.getElementById('reserve-book-id').value);
+      await reserveBook(memberId, bookId);
+    }
+
+    async function viewReservations(bookId, bookTitle) {
+      try {
+        const data = await API.get(`/api/reservations?bookId=${bookId}`);
+        document.getElementById('reservations-title').textContent = `Waiting Queue: ${bookTitle}`;
+        const tbody = document.getElementById('reservations-tbody');
+        if (!data.queue || data.queue.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">No active reservations for this book.</td></tr>';
+        } else {
+          tbody.innerHTML = data.queue.map(q => `
+            <tr>
+              <td><span class="badge badge-info">Position #${q.position}</span></td>
+              <td>#${q.memberId}</td>
+              <td><strong>${q.memberName}</strong></td>
+            </tr>
+          `).join('');
+        }
+        openModal('modal-reservations');
+      } catch (e) {
+        showToast('Error loading reservations: ' + e.message, 'error');
+      }
+    }
+
+    // ---------------- Overdue & History ----------------
+    async function loadOverdue() {
+      try {
+        const data = await API.get('/api/overdue');
+        const tbody = document.getElementById('overdue-tbody');
+        if (!data.overdue || data.overdue.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">No overdue loans in the library!</td></tr>';
+          return;
+        }
+        tbody.innerHTML = data.overdue.map(t => {
+          const fine = calculateFine(t.dueDate);
+          return `
+            <tr>
+              <td><strong>#${t.id}</strong></td>
+              <td>${t.memberName} <span style="color:var(--text-muted);font-size:0.75rem;">(#${t.memberId})</span></td>
+              <td><strong>${t.bookTitle}</strong> <span style="color:var(--text-muted);font-size:0.75rem;">(#${t.bookId})</span></td>
+              <td>${t.issueDate}</td>
+              <td><span class="badge badge-danger">${t.dueDate}</span></td>
+              <td><span style="color:var(--danger);font-weight:600;">Rs. ${fine} Accrued</span></td>
+              <td>
+                <button class="btn btn-sm btn-primary" onclick="quickReturn(${t.memberId}, ${t.bookId})">Process Return</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (e) {
+        showToast('Error loading overdue report: ' + e.message, 'error');
+      }
+    }
+
+    async function loadHistory() {
+      try {
+        const data = await API.get('/api/history');
+        const tbody = document.getElementById('history-tbody');
+        if (!data.history || data.history.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No transactions found.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = data.history.slice().reverse().map(t => `
+          <tr>
+            <td><strong>#${t.id}</strong></td>
+            <td>${t.memberName} (#${t.memberId})</td>
+            <td>${t.bookTitle} (#${t.bookId})</td>
+            <td>${t.issueDate}</td>
+            <td>${t.dueDate}</td>
+            <td>${t.returnDate || '<span style="color:var(--text-muted);">Active Loan</span>'}</td>
+            <td>${t.fine > 0 ? `<span style="color:var(--danger);font-weight:600;">Rs. ${t.fine}</span>` : 'Rs. 0'}</td>
+            <td>${t.active ? '<span class="badge badge-warning">On Loan</span>' : '<span class="badge badge-success">Returned</span>'}</td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        showToast('Error loading history: ' + e.message, 'error');
+      }
+    }
+
+    // ---------------- Date Simulation & Actions ----------------
+    function openDateModal() { openModal('modal-date'); }
+
+    async function setSpecificDate() {
+      const val = document.getElementById('input-system-date').value;
+      if (!val) return;
+      const res = await API.post('/api/date', { date: val });
+      if (res.success) {
+        showToast(`System date set to ${res.today}`, 'success');
+        closeModal('modal-date');
+        loadStats();
+      }
+    }
+
+    async function advanceDays(n) {
+      const res = await API.post('/api/date', { days: n });
+      if (res.success) {
+        showToast(`Advanced calendar by ${n} days to ${res.today}`, 'success');
+        closeModal('modal-date');
+        loadStats();
+      }
+    }
+
+    async function resetToday() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      const res = await API.post('/api/date', { date: todayStr });
+      if (res.success) {
+        showToast(`System date reset to real-world date (${todayStr})`, 'info');
+        closeModal('modal-date');
+        loadStats();
+      }
+    }
+
+    async function undoLastAction() {
+      const res = await API.post('/api/undo', {});
+      if (res.success) {
+        showToast(res.message, 'success');
+        loadStats();
+        loadBooks();
+        loadMembers();
+        loadOverdue();
+        loadHistory();
+      } else {
+        showToast(res.error || 'Nothing to undo', 'error');
+      }
+    }
+
+    async function saveToDisk() {
+      const res = await API.post('/api/save', {});
+      if (res.success) {
+        showToast(res.message, 'success');
+      } else {
+        showToast(res.error || 'Save failed', 'error');
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    // Init on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStats();
+    });
+  </script>
+</body>
+</html>
